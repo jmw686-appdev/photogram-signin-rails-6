@@ -1,21 +1,21 @@
 require "application_system_test_case"
 
-class UserAuthenticationTest < ApplicationSystemTestCase
-  test "/photos/[ID] - Displays Update photo form when photo belongs to current user" do
-    first_user = User.new
-    first_user.password = "password"
-    first_user.username = "alice"
-    first_user.save
+class UsersTest < ApplicationSystemTestCase
+  test "viewing the index" do
+    # first_user = User.new
+    # first_user.password = "password"
+    # first_user.username = "alice"
+    # first_user.save
+    #
+    # photo = Photo.new
+    # photo.image = "https://some.test/image-#{Time.now.to_i}.jpg"
+    # photo.caption = "Some test caption #{Time.now.to_i}"
+    # photo.owner_id = first_user.id
+    # photo.save
 
-    photo = Photo.new
-    photo.image = "https://some.test/image-#{Time.now.to_i}.jpg"
-    photo.caption = "Some test caption #{Time.now.to_i}"
-    photo.owner_id = first_user.id
-    photo.save
+    visit users_path
 
-    visit("/sign_in")
-    
-    assert_selector "h1", text: "Sign in"
+    assert_selector "h1", text: "Users"
   end
 
 end
@@ -33,13 +33,13 @@ end
 #     photo.save
 
 #     visit "/sign_in"
-    
+
 #     within(:css, "form") do
 #       fill_in "Username", with: first_user.username
 #       fill_in "Password", with: first_user.password
 #       click_on "Sign in"
 #     end
-    
+
 #     visit "/photos/#{photo.id}"
 
 
@@ -61,14 +61,14 @@ end
 #     photo.save
 
 #     visit "/sign_in"
-    
-    
+
+
 #     within(:css, "form") do
 #       fill_in "Username", with: first_user.username
 #       fill_in "Password", with: first_user.password
 #       click_on "Sign in"
 #     end
-    
+
 #     visit "/photos/#{photo.id}"
 
 #     expect(page).to have_content(first_user.username)
@@ -92,16 +92,16 @@ end
 #     photo.save
 
 #     visit "/sign_in"
-    
+
 #     within(:css, "form") do
 #       fill_in "Username", with: first_user.username
 #       fill_in "Password", with: first_user.password
 #       click_on "Sign in"
 #     end
-    
+
 #     old_likes_count = photo.likes_count
 #     visit "/photos/#{photo.id}"
-    
+
 #     click_on "Like"
 
 #     expect(photo.likes.count).to be >= (old_likes_count + 1)
@@ -128,13 +128,13 @@ end
 #     like.save
 
 #     visit "/sign_in"
-    
+
 #     within(:css, "form") do
 #       fill_in "Username", with: first_user.username
 #       fill_in "Password", with: first_user.password
 #       click_on "Sign in"
 #     end
-    
+
 #     visit "/photos/#{photo.id}"
 #     old_likes_count = photo.likes_count
 
@@ -161,7 +161,7 @@ end
 #     photo.save
 
 #     visit "/sign_in"
-    
+
 #     within(:css, "form") do
 #       fill_in "Username", with: first_user.username
 #       fill_in "Password", with: first_user.password
