@@ -1,21 +1,21 @@
 require "application_system_test_case"
 
 class UsersTest < ApplicationSystemTestCase
-  test "viewing the index" do
-    # first_user = User.new
-    # first_user.password = "password"
-    # first_user.username = "alice"
-    # first_user.save
-    #
-    # photo = Photo.new
-    # photo.image = "https://some.test/image-#{Time.now.to_i}.jpg"
-    # photo.caption = "Some test caption #{Time.now.to_i}"
-    # photo.owner_id = first_user.id
-    # photo.save
+  test "/sign_in - Says Sign in" do
+    first_user = User.new
+    first_user.password = "password"
+    first_user.username = "alice"
+    first_user.save
 
-    visit users_path
+    photo = Photo.new
+    photo.image = "https://some.test/image-#{Time.now.to_i}.jpg"
+    photo.caption = "Some test caption #{Time.now.to_i}"
+    photo.owner_id = first_user.id
+    photo.save
 
-    assert_selector "h1", text: "Users"
+    visit("/sign_in")
+
+    assert_selector("h1", text: "Sign in")
   end
 
 end
