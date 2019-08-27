@@ -31,12 +31,12 @@ class PhotosController < ApplicationController
   def create
     photo = Photo.new
 
-    photo.owner_id = current_user.id
+    photo.owner_id = params.fetch(:qs_owner_id, nil)
     photo.caption = params.fetch(:qs_caption, nil)
     photo.image = params.fetch(:qs_image, nil)
     photo.likes_count = params.fetch(:qs_likes_count, 0)
     photo.comments_count = params.fetch(:qs_comments_count, 0)
-
+    
     photo.save
 
     respond_to do |format|
@@ -60,9 +60,9 @@ class PhotosController < ApplicationController
     photo.image = params.fetch(:qs_image, photo.image)
     photo.likes_count = params.fetch(:qs_likes_count, photo.likes_count)
     photo.comments_count = params.fetch(:qs_comments_count, photo.comments_count)
-
+    
     photo.save
-
+  
     respond_to do |format|
       format.json do
         render({ :json => photo.as_json })
@@ -89,7 +89,7 @@ class PhotosController < ApplicationController
         redirect_to("/photos")
       end
     end  end
-
+ 
   def comments
     the_id = params.fetch(:rt_photo_id)
     photo = Photo.where({ :id => the_id }).at(0)

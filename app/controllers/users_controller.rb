@@ -1,24 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, :only => [:session_form, :add_cookie, :registration_form, :create]
-
-  def add_cookie
-    user = User.where({ :username => params.fetch(:qs_username) }).at(0)
-
-    if user != nil && user.authenticate(params.fetch(:qs_password))
-      session[:user_id] = user.id
-
-      redirect_to("/", { :notice => "Signed in successfully." })
-    else
-      redirect_to("/sign_in", { :alert => "Something went wrong. Please try again." })
-    end
-  end
-
-  def remove_cookies
-    reset_session
-
-    redirect_to("/", { :notice => "Signed out successfully." })
-  end
-
   def index
     @users = User.all.order({ :username => :asc })
 
@@ -55,25 +35,17 @@ class UsersController < ApplicationController
     user.private = params.fetch(:qs_private, nil)
     user.likes_count = params.fetch(:qs_likes_count, 0)
     user.comments_count = params.fetch(:qs_comments_count, 0)
-    user.password = params.fetch(:qs_password)
-    user.password_confirmation = params.fetch(:qs_password_confirmation)
-
-    save_status = user.save
-
-    if save_status == true
-      session[:user_id] = user.id
-
-      respond_to do |format|
-        format.json do
-          render({ :json => @user.as_json })
-        end
-
-        format.html do
-          redirect_to("/users/#{user.username}")
-        end
+    
+    user.save
+    
+    respond_to do |format|
+      format.json do
+        render({ :json => @user.as_json })
       end
-    else
-      redirect_to("/sign_up", { :alert => "Something went wrong. Please try again." })
+
+      format.html do
+        redirect_to("/users/#{user.username}")
+      end
     end
   end
 
@@ -86,7 +58,7 @@ class UsersController < ApplicationController
     user.private = params.fetch(:qs_private, nil)
     user.likes_count = params.fetch(:qs_likes_count, user.likes_count)
     user.comments_count = params.fetch(:qs_comments_count, user.comments_count)
-
+    
     user.save
 
     respond_to do |format|
@@ -112,7 +84,7 @@ class UsersController < ApplicationController
   def liked_photos
     username = params.fetch(:rt_username)
     @user = User.where({ :username => username }).at(0)
-
+  
     respond_to do |format|
       format.json do
         render({ :json => @user.liked_photos.as_json })
@@ -134,7 +106,7 @@ class UsersController < ApplicationController
   def feed
     username = params.fetch(:rt_username)
     @user = User.where({ :username => username }).at(0)
-
+    
     respond_to do |format|
       format.json do
         render({ :json => @user.feed.as_json })
